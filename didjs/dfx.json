@@ -1,0 +1,10 @@
+{
+  "canisters": {
+    "didjs": {
+      "package": "didjs",
+      "type": "rust",
+      "candid": "didjs.did",
+      "wasm": "didjs.wasm"
+    }
+  }
+}
