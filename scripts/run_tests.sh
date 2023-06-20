@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TOTAL_COUNT=4
+TOTAL_COUNT=2
 SUCCESS_COUNT=0
 FAIL_COUNT=0
 FAILED_AT=""
@@ -22,22 +22,32 @@ function show_result() {
     fi
 }
 
+function handle_resets() {
+    if [ $1 == "multisig" ]; then
+        # echo "sleeping for 5 seconds.."
+        # sleep 5
+        bash scripts/reset.sh
+    fi
+}
+
+
 function handle_error() {
     FAIL_COUNT=$((FAIL_COUNT + 1))
     FAILED_AT=$1
-    bash scripts/reset.sh
+    handle_resets $1
     show_result
 }
 
 function handle_success() {
     SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
     echo "$1 tests passed"
-    bash scripts/reset.sh
+    handle_resets $1
     show_result
 
 }
 
 tests=(
+    "identities"
     "multisig"
     )
 

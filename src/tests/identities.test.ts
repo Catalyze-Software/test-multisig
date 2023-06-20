@@ -16,4 +16,9 @@ describe("identities check", () => {
       "ca66n-ufugt-mpswh-vmj2w-ps2si-k7qhb-ad3nz-xdtcm-7kpzr-msdem-xqe"
     );
   });
+  test("identity four", () => {
+    expect(identities.four().getPrincipal().toString()).toBe(
+      "kd6bo-htilb-g3mzh-gx7jd-jno2b-bp33o-ycr6y-zjzq2-y4o2l-56mee-tae"
+    );
+  });
 });

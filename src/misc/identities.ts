@@ -19,9 +19,16 @@ const identityThree = () => {
   return Ed25519KeyIdentity.generate(seed as Uint8Array);
 };
 
+const identityFour = () => {
+  // ca66n-ufugt-mpswh-vmj2w-ps2si-k7qhb-ad3nz-xdtcm-7kpzr-msdem-xqe
+  const seed = pbkdf2Sync("four", "salt", 1000, 32, "sha512");
+  return Ed25519KeyIdentity.generate(seed as Uint8Array);
+};
+
 export default {
   one: identityOne,
   two: identityTwo,
   three: identityThree,
-  array: [identityOne, identityTwo, identityThree],
+  four: identityFour,
+  array: [identityOne, identityTwo, identityThree, identityFour],
 };

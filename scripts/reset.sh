@@ -1,13 +1,7 @@
 #!/bin/sh
 
-  repos=(
-    "multisig"
+(
+  cd _test_environment/multisig; 
+  dfx canister uninstall-code multisig;
+  dfx canister install --wasm wasm/multisig.wasm.gz multisig --argument '(principal "6s25k-hbv72-gibhe-tjgoy-pk77w-6ipvc-dzerp-rcg3q-o42a4-e6gyt-uqe")';
 )
-
-for repo in "${repos[@]}"; do
-  (
-    cd _test_environment/$repo; 
-    dfx canister uninstall-code parent;
-    dfx canister install --wasm wasm/parent.wasm.gz parent;
-  )
-done
