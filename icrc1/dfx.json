@@ -1,0 +1,10 @@
+{
+  "canisters": {
+    "icrc1_token": {
+      "type": "rust",
+      "package": "icrc1",
+      "candid": "candid/icrc1.did",
+      "wasm": "wasm/icrc1.wasm"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "canisters": {
+    "dip20_token": {
+      "type": "rust",
+      "package": "dip20",
+      "candid": "candid/dip20.did",
+      "wasm": "wasm/dip20.wasm"
+    }
+  }
+}

@@ -63,7 +63,7 @@ export interface _SERVICE {
   whitelist_request: ActorMethod<[WhitelistRequestType], Result_1>;
 }
 
-export const idlFactory = ({ IDL }) => {
+export const idlFactory = ({ IDL }: any) => {
   const TokenStandard = IDL.Variant({ ICRC1: IDL.Null, DIP20: IDL.Null });
   const Result = IDL.Variant({ Ok: IDL.Null, Err: IDL.Text });
   const Status = IDL.Variant({
