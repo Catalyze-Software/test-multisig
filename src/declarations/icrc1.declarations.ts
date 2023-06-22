@@ -19,7 +19,7 @@ export type ApproveError =
   | { TooOld: null }
   | { Expired: { ledger_time: bigint } }
   | { InsufficientFunds: { balance: Tokens } };
-export interface Ledger {
+export interface _SERVICE {
   icrc1_balance_of: (arg_0: Account) => Promise<Tokens>;
   icrc1_decimals: () => Promise<number>;
   icrc1_fee: () => Promise<bigint>;

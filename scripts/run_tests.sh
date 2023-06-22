@@ -49,6 +49,7 @@ function handle_success() {
 tests=(
     "identities"
     "multisig"
+    "transfer"
     )
 
 for test in "${tests[@]}"; do

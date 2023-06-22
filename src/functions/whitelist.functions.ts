@@ -1,8 +1,8 @@
 import identities from "../misc/identities";
-import multisigActor from "../misc/actors";
+import { multisigActor } from "../misc/actors";
 import { _SERVICE } from "../declarations/multisig.declarations";
 
-export function addToWhitelistTest() {
+export function whitelistTest() {
   let msOne = multisigActor(identities.one());
   let msTwo = multisigActor(identities.two());
   let msThree = multisigActor(identities.three());

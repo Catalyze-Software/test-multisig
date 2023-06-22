@@ -20,7 +20,7 @@ const identityThree = () => {
 };
 
 const identityFour = () => {
-  // ca66n-ufugt-mpswh-vmj2w-ps2si-k7qhb-ad3nz-xdtcm-7kpzr-msdem-xqe
+  // kd6bo-htilb-g3mzh-gx7jd-jno2b-bp33o-ycr6y-zjzq2-y4o2l-56mee-tae
   const seed = pbkdf2Sync("four", "salt", 1000, 32, "sha512");
   return Ed25519KeyIdentity.generate(seed as Uint8Array);
 };
