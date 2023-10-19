@@ -15,6 +15,7 @@ export function airdropTest() {
   let msOne = multisigActor(identities.one());
   let msTwo = multisigActor(identities.two());
   let msThree = multisigActor(identities.three());
+  let msFour = multisigActor(identities.four());
 
   const initialAmount = 1 * 10 ** 9;
   const airdropRequestAmount = 1 * 10 ** 7;
@@ -34,6 +35,9 @@ export function airdropTest() {
   });
   it("Multisig three canister should be defined", async () => {
     expect(msThree).toBeDefined();
+  });
+  it("Multisig four canister should be defined", async () => {
+    expect(msFour).toBeDefined();
   });
 
   //
@@ -165,6 +169,137 @@ export function airdropTest() {
   it("Should exist pending airdrop request from identity one", async () => {
     let result = await msOne.get_airdrop_requests([{ Pending: null }]);
     expect(result.length).toBeGreaterThan(0);
+  });
+
+  it("Should say already voted", async () => {
+    let result = await msOne.vote_on_airdrop_request(0, { Approve: null });
+    expect(result).toEqual({ Err: "Approval vote already cast" });
+  });
+
+  it("Should say caller is not whitelisted when identity four try to vote on airdrop request", async () => {
+    let result = await msFour.vote_on_airdrop_request(0, { Approve: null });
+    expect(result).toEqual({ Err: "Caller is not whitelisted" });
+  });
+
+  it("Should say airdrop request approved after identity two approve the request", async () => {
+    let result = await msTwo.vote_on_airdrop_request(0, { Approve: null });
+    expect(result).toEqual({ Ok: "Airdrop request approved" });
+  });
+
+  it("Should multisig has less DIP20 balance about 2 * airdropRequestAmount", async () => {
+    let result = await dip20One.balanceOf(
+      Principal.fromText(multisig_canister_id)
+    );
+    expect(result).toEqual(BigInt(initialAmount - 2 * airdropRequestAmount));
+  });
+
+  it("Should identity two and three have airdropRequestAmount of DIP20", async () => {
+    let twoBalance = await dip20One.balanceOf(identities.two().getPrincipal());
+    let threeBalance = await dip20One.balanceOf(
+      identities.three().getPrincipal()
+    );
+    expect(twoBalance).toEqual(BigInt(airdropRequestAmount));
+    expect(threeBalance).toEqual(BigInt(airdropRequestAmount));
+  });
+
+  it("Should say airdrop request is not pending when identity two try to approve", async () => {
+    let result = await msTwo.vote_on_airdrop_request(0, { Approve: null });
+    expect(result).toEqual({ Err: "Airdrop request is not pending" });
+  });
+
+  it("Should say airdrop request not found when send wrong request id", async () => {
+    let result = await msTwo.vote_on_airdrop_request(1, { Approve: null });
+    expect(result).toEqual({ Err: "Airdrop request not found" });
+  });
+
+  it("Should transaction for airdrop request 0 has approved status", async () => {
+    let result = await msTwo.get_airdrop_transactions(0);
+    expect(result).toHaveProperty("Ok");
+  });
+
+  it("Should identity one send ICRC1 airdrop request", async () => {
+    let result = await msOne.airdrop_request(
+      Principal.fromText(icrc1_canister_id),
+      [
+        {
+          ICRC1: {
+            amount: BigInt(airdropRequestAmount),
+            to: {
+              owner: identities.two().getPrincipal(),
+              subaccount: [],
+            },
+            fee: [],
+            memo: [],
+            from_subaccount: [],
+            created_at_time: [],
+          },
+        },
+        {
+          ICRC1: {
+            amount: BigInt(airdropRequestAmount),
+            to: {
+              owner: identities.three().getPrincipal(),
+              subaccount: [],
+            },
+            fee: [],
+            memo: [],
+            from_subaccount: [],
+            created_at_time: [],
+          },
+        },
+      ]
+    );
+    expect(result).toEqual({ Ok: "Airdrop request created" });
+  });
+
+  it("Should say Insufficient ICRC1 balance", async () => {
+    let result = await msOne.airdrop_request(
+      Principal.fromText(icrc1_canister_id),
+      [
+        {
+          ICRC1: {
+            amount: BigInt(insufficientAmount),
+            to: {
+              owner: identities.two().getPrincipal(),
+              subaccount: [],
+            },
+            fee: [],
+            memo: [],
+            from_subaccount: [],
+            created_at_time: [],
+          },
+        },
+      ]
+    );
+    expect(result).toEqual({ Err: "Insufficient ICRC balance" });
+  });
+
+  it("Should say airdrop request approved after identity three approve the request", async () => {
+    let result = await msThree.vote_on_airdrop_request(1, { Approve: null });
+    expect(result).toEqual({ Ok: "Airdrop request approved" });
+  });
+
+  it("Should multisig has less ICRC1 balance about more than 2 * airdropRequestAmount", async () => {
+    let balance = await icrcOne.icrc1_balance_of({
+      owner: Principal.fromText(multisig_canister_id),
+      subaccount: [],
+    });
+    expect(balance).toBeLessThan(
+      BigInt(initialAmount - 2 * airdropRequestAmount)
+    );
+  });
+
+  it("Should identity two and three have airdropRequestAmount of ICRC", async () => {
+    let twoBalance = await icrcOne.icrc1_balance_of({
+      owner: identities.two().getPrincipal(),
+      subaccount: [],
+    });
+    let threeBalance = await icrcOne.icrc1_balance_of({
+      owner: identities.three().getPrincipal(),
+      subaccount: [],
+    });
+    expect(twoBalance).toEqual(BigInt(airdropRequestAmount));
+    expect(threeBalance).toEqual(BigInt(airdropRequestAmount));
   });
   /** End - Test airdrop logic */
 }

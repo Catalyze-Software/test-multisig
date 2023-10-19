@@ -40,9 +40,9 @@ function handle_success() {
 }
 
 tests=(
-    # "identities"
-    # "transfer"
-    # "whitelist"
+    "identities"
+    "transfer"
+    "whitelist"
     "airdrop"
     )
 
