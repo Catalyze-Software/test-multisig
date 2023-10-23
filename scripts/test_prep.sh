@@ -19,12 +19,13 @@ dfx start --clean --background
 (
     cd didjs; 
     dfx canister create didjs --no-wallet; 
-    echo "export const candid_ui = 'http://localhost:8080/?canisterId=$(dfx canister id didjs)';" >> ../_test_environment/testCanisterIds.ts;
+    echo "export const candid_ui = 'http://localhost:4943/?canisterId=$(dfx canister id didjs)';" >> ../_test_environment/testCanisterIds.ts;
     echo "export const candid_ui_canister_id = '$(dfx canister id didjs)';" >> ../_test_environment/testCanisterIds.ts;
     dfx canister install --wasm didjs.wasm didjs;
 )
-    # clone the repo
-git clone --depth 1 git@github.com:Catalyze-Software/multisig.git _test_environment/multisig
+
+# clone the repo
+git clone -b feature/add-airdrop --depth 1 https://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@github.com/Catalyze-Software/multisig.git _test_environment/multisig
 
 # run code inside folder
 (

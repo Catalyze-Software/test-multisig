@@ -1,11 +1,9 @@
 #!/bin/bash
 
-TOTAL_COUNT=2
+TOTAL_COUNT=4
 SUCCESS_COUNT=0
 FAIL_COUNT=0
 FAILED_AT=""
-
-bash scripts/reset_all.sh
 
 # Function to show the test result
 function show_result() {
@@ -23,9 +21,7 @@ function show_result() {
 }
 
 function handle_resets() {
-    if [ $1 == "multisig" ]; then
-        # echo "sleeping for 5 seconds.."
-        # sleep 5
+    if [ $1 != "identities" ]; then
         bash scripts/reset.sh
     fi
 }
@@ -34,30 +30,29 @@ function handle_resets() {
 function handle_error() {
     FAIL_COUNT=$((FAIL_COUNT + 1))
     FAILED_AT=$1
-    handle_resets $1
     show_result
 }
 
 function handle_success() {
     SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
     echo "$1 tests passed"
-    handle_resets $1
     show_result
-
 }
 
 tests=(
     "identities"
-    "multisig"
     "transfer"
+    "whitelist"
+    "airdrop"
     )
 
 for test in "${tests[@]}"; do
 # IDENTITIES TEST
+handle_resets $test
 npx jest $test
 if [ $? -ne 0 ]; then
     handle_error $test
-    exit 1
+    # exit 1
 else 
     handle_success $test
 fi

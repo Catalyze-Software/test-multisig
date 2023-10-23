@@ -1,9 +1,22 @@
 import { Actor, HttpAgent } from "@dfinity/agent";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
-import { _SERVICE as _MULTISIG_SERVICE, idlFactory as multisigIdlFactory } from "../declarations/multisig.declarations";
-import { _SERVICE as _DIP20_SERVICE, idlFactory as dip20IdlFactory } from "../declarations/dip20.declarations";
-import { _SERVICE as _ICRC1_SERVICE, idlFactory as icrc1IdlFactory } from "../declarations/icrc1.declarations";
-import { dip20_canister_id, icrc1_canister_id, multisig_canister_id } from "../../_test_environment/testCanisterIds";
+import {
+  _SERVICE as _MULTISIG_SERVICE,
+  idlFactory as multisigIdlFactory,
+} from "../declarations/multisig.declarations";
+import {
+  _SERVICE as _DIP20_SERVICE,
+  idlFactory as dip20IdlFactory,
+} from "../declarations/dip20.declarations";
+import {
+  _SERVICE as _ICRC1_SERVICE,
+  idlFactory as icrc1IdlFactory,
+} from "../declarations/icrc1.declarations";
+import {
+  dip20_canister_id,
+  icrc1_canister_id,
+  multisig_canister_id,
+} from "../../_test_environment/testCanisterIds";
 
 const host = "http://127.0.0.1:8080";
 

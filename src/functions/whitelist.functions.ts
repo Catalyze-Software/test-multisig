@@ -35,15 +35,19 @@ export function whitelistTest() {
     let result = (await msOne.get_whitelist()).map((p) => p.toString());
 
     await expect(Promise.resolve(result)).resolves.toHaveLength(2);
-    await expect(Promise.resolve(result)).resolves.toContain(identities.one().getPrincipal().toString());
-    await expect(Promise.resolve(result)).resolves.toContain(identities.two().getPrincipal().toString());
+    await expect(Promise.resolve(result)).resolves.toContain(
+      identities.one().getPrincipal().toString()
+    );
+    await expect(Promise.resolve(result)).resolves.toContain(
+      identities.two().getPrincipal().toString()
+    );
   });
 
   it("Should create request to add identity three to the whitelist", async () => {
     let result = await msOne.whitelist_request({
       Add: identities.three().getPrincipal(),
     });
-    expect(result).toEqual({ Err: "No marjority reached" });
+    expect(result).toEqual({ Err: "No majority reached" });
   });
 
   it("Should try to add the request again and say there is already a pending request", async () => {
@@ -78,7 +82,7 @@ export function whitelistTest() {
     let result = await msOne.whitelist_request({
       Add: identities.three().getPrincipal(),
     });
-    expect(result).toEqual({ Err: "No marjority reached" });
+    expect(result).toEqual({ Err: "No majority reached" });
   });
 
   //
@@ -97,9 +101,15 @@ export function whitelistTest() {
   it("Should have identity one, two and three in the whitelist", async () => {
     let result = (await msTwo.get_whitelist()).map((p) => p.toString());
     await expect(Promise.resolve(result)).resolves.toHaveLength(3);
-    await expect(Promise.resolve(result)).resolves.toContain(identities.one().getPrincipal().toString());
-    await expect(Promise.resolve(result)).resolves.toContain(identities.two().getPrincipal().toString());
-    await expect(Promise.resolve(result)).resolves.toContain(identities.three().getPrincipal().toString());
+    await expect(Promise.resolve(result)).resolves.toContain(
+      identities.one().getPrincipal().toString()
+    );
+    await expect(Promise.resolve(result)).resolves.toContain(
+      identities.two().getPrincipal().toString()
+    );
+    await expect(Promise.resolve(result)).resolves.toContain(
+      identities.three().getPrincipal().toString()
+    );
   });
 
   it("Should say the principal is not whitelisted", async () => {
@@ -133,7 +143,7 @@ export function whitelistTest() {
     let result = await msOne.whitelist_request({
       Remove: identities.two().getPrincipal(),
     });
-    expect(result).toEqual({ Err: "No marjority reached" });
+    expect(result).toEqual({ Err: "No majority reached" });
   });
 
   //
@@ -147,7 +157,11 @@ export function whitelistTest() {
   it("Should have identity one and three in the whitelist", async () => {
     let result = (await msThree.get_whitelist()).map((p) => p.toString());
     await expect(Promise.resolve(result)).resolves.toHaveLength(2);
-    await expect(Promise.resolve(result)).resolves.toContain(identities.one().getPrincipal().toString());
-    await expect(Promise.resolve(result)).resolves.toContain(identities.three().getPrincipal().toString());
+    await expect(Promise.resolve(result)).resolves.toContain(
+      identities.one().getPrincipal().toString()
+    );
+    await expect(Promise.resolve(result)).resolves.toContain(
+      identities.three().getPrincipal().toString()
+    );
   });
 }
